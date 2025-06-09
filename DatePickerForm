@@ -2,11 +2,11 @@ Option Explicit
 Public currentMonth As Integer
 Public currentYear As Integer
 Private buttonHandlers() As clsCalendarButton
-Private WithEvents btnPrevHandler As MSForms.CommandButton
-Private WithEvents btnNextHandler As MSForms.CommandButton
-Private WithEvents btnCancelHandler As MSForms.CommandButton
-Private WithEvents btnPrevYearHandler As MSForms.CommandButton
-Private WithEvents btnNextYearHandler As MSForms.CommandButton
+Public WithEvents btnPrevHandler As MSForms.CommandButton
+Public WithEvents btnNextHandler As MSForms.CommandButton
+Public WithEvents btnCancelHandler As MSForms.CommandButton
+Public WithEvents btnPrevYearHandler As MSForms.CommandButton
+Public WithEvents btnNextYearHandler As MSForms.CommandButton
 
 Public Sub InitButtonHandlers(count As Integer)
     ReDim buttonHandlers(1 To count)
