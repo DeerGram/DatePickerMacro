@@ -2,9 +2,16 @@ Option Explicit
 Public currentMonth As Integer
 Public currentYear As Integer
 Private buttonHandlers() As clsCalendarButton
+Private WithEvents btnPrevHandler As MSForms.CommandButton
+Private WithEvents btnNextHandler As MSForms.CommandButton
+Private WithEvents btnCancelHandler As MSForms.CommandButton
+Private WithEvents btnPrevYearHandler As MSForms.CommandButton
+Private WithEvents btnNextYearHandler As MSForms.CommandButton
+
 Public Sub InitButtonHandlers(count As Integer)
     ReDim buttonHandlers(1 To count)
 End Sub
+
 Private Sub btnPrev_Click()
     If currentMonth = 1 Then
         currentMonth = 12
@@ -14,6 +21,7 @@ Private Sub btnPrev_Click()
     End If
     LoadCalendar currentYear, currentMonth
 End Sub
+
 Private Sub btnNext_Click()
     If currentMonth = 12 Then
         currentMonth = 1
@@ -24,21 +32,24 @@ Private Sub btnNext_Click()
     LoadCalendar currentYear, currentMonth
     Me.Repaint
 End Sub
+
 Private Sub btnCancel_Click()
     Me.Hide
 End Sub
+
 Public Sub OnDynamicButtonClick(index As Integer)
     Dim dayVal As String
     dayVal = Me.Controls("dynBtn" & index).Caption
     If dayVal = "" Then Exit Sub
-Dim selectedDate As Date
+    Dim selectedDate As Date
     selectedDate = DateSerial(currentYear, currentMonth, CInt(dayVal))
-With ThisWorkbook.Sheets("Review Generator")
+    With ThisWorkbook.Sheets("Review Generator")
         Application.Goto ActiveCell
         ActiveCell.Value = Format(selectedDate, "mm/dd/yyyy")
     End With
-Me.Hide
+    Me.Hide
 End Sub
+
 Public Sub LoadCalendar(y As Integer, m As Integer)
     Dim firstDay As Date
     Dim startDay As Integer
@@ -47,12 +58,12 @@ Public Sub LoadCalendar(y As Integer, m As Integer)
     Dim dayCount As Integer
     Dim today As Date
     Dim todayDay As Integer
-Me.Controls("lblMonth").Caption = Format(DateSerial(y, m, 1), "mmmm yyyy")
+    Me.Controls("lblMonth").Caption = Format(DateSerial(y, m, 1), "mmmm yyyy")
     firstDay = DateSerial(y, m, 1)
     startDay = Weekday(firstDay, vbMonday)
     lastDay = Day(DateSerial(y, m + 1, 0))
     dayCount = 1
-' Clear all buttons
+    ' Clear all buttons
     For i = 1 To 42
         With Me.Controls("dynBtn" & i)
             .Caption = ""
@@ -62,7 +73,7 @@ Me.Controls("lblMonth").Caption = Format(DateSerial(y, m, 1), "mmmm yyyy")
             .ForeColor = &H80000012
         End With
     Next i
-' Fill buttons with day numbers
+    ' Fill buttons with day numbers
     For i = startDay To startDay + lastDay - 1
         With Me.Controls("dynBtn" & i)
             .Caption = dayCount
@@ -70,7 +81,7 @@ Me.Controls("lblMonth").Caption = Format(DateSerial(y, m, 1), "mmmm yyyy")
         End With
         dayCount = dayCount + 1
     Next i
-' Highlight today
+    ' Highlight today
     today = Date
     If m = Month(today) And y = Year(today) Then
         todayDay = Day(today)
@@ -86,10 +97,36 @@ Me.Controls("lblMonth").Caption = Format(DateSerial(y, m, 1), "mmmm yyyy")
         Next i
     End If
 End Sub
+
 Public Sub RegisterButton(ByVal btn As MSForms.CommandButton, ByVal index As Integer)
     Set buttonHandlers(index) = New clsCalendarButton
     Set buttonHandlers(index).btn = btn
     buttonHandlers(index).index = index
+End Sub
+
+' Event handlers for dynamically created navigation buttons
+Private Sub btnPrevHandler_Click()
+    btnPrev_Click
+End Sub
+
+Private Sub btnNextHandler_Click()
+    btnNext_Click
+End Sub
+
+Private Sub btnCancelHandler_Click()
+    btnCancel_Click
+End Sub
+
+Private Sub btnPrevYearHandler_Click()
+    currentYear = currentYear - 1
+    LoadCalendar currentYear, currentMonth
+    Me.Repaint
+End Sub
+
+Private Sub btnNextYearHandler_Click()
+    currentYear = currentYear + 1
+    LoadCalendar currentYear, currentMonth
+    Me.Repaint
 End Sub
 
 
