@@ -1,0 +1,5 @@
+Public WithEvents btn As MSForms.CommandButton
+Public index As Integer
+Private Sub btn_Click()
+    DatePickerForm.OnDynamicButtonClick Me.index
+End Sub
