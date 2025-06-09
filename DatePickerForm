@@ -20,6 +20,7 @@ Private Sub btnPrev_Click()
         currentMonth = currentMonth - 1
     End If
     LoadCalendar currentYear, currentMonth
+    Me.Repaint
 End Sub
 
 Private Sub btnNext_Click()

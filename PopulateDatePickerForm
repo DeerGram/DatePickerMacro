@@ -20,35 +20,42 @@ Set f = DatePickerForm
 ' Month label
     Set lblMonth = f.Controls.Add("Forms.Label.1", "lblMonth")
     With lblMonth
-        .Top = 10: .Left = 100: .Width = 200: .Height = 20
+        .Top = 20: .Left = 110: .Width = 200: .Height = 20
         .Caption = "Month Year"
         .Font.Size = 11: .Font.Bold = True: .TextAlign = 2
     End With
-' Prev year button
+
+' Year navigation
+    Dim lblYearNav As MSForms.Label
+    Set lblYearNav = f.Controls.Add("Forms.Label.1", "lblYearNav")
+    With lblYearNav: .Top = 45: .Left = 10: .Width = 60: .Caption = "Year": .TextAlign = 2: End With
     Set btnPrevYear = f.Controls.Add("Forms.CommandButton.1", "btnPrevYear")
-    With btnPrevYear: .Top = 10: .Left = 10: .Width = 60: .Caption = "<<": End With
-' Prev month button
-    Set btnPrev = f.Controls.Add("Forms.CommandButton.1", "btnPrev")
-    With btnPrev: .Top = 10: .Left = 80: .Width = 60: .Caption = "<": End With
-' Next month button
-    Set btnNext = f.Controls.Add("Forms.CommandButton.1", "btnNext")
-    With btnNext: .Top = 10: .Left = 250: .Width = 60: .Caption = ">": End With
-' Next year button
+    With btnPrevYear: .Top = 60: .Left = 10: .Width = 30: .Caption = "<": End With
     Set btnNextYear = f.Controls.Add("Forms.CommandButton.1", "btnNextYear")
-    With btnNextYear: .Top = 10: .Left = 320: .Width = 60: .Caption = ">>": End With
+    With btnNextYear: .Top = 60: .Left = 40: .Width = 30: .Caption = ">": End With
+
+' Month navigation
+    Dim lblMonthNav As MSForms.Label
+    Set lblMonthNav = f.Controls.Add("Forms.Label.1", "lblMonthNav")
+    With lblMonthNav: .Top = 45: .Left = 350: .Width = 60: .Caption = "Month": .TextAlign = 2: End With
+    Set btnPrev = f.Controls.Add("Forms.CommandButton.1", "btnPrev")
+    With btnPrev: .Top = 60: .Left = 350: .Width = 30: .Caption = "<": End With
+    Set btnNext = f.Controls.Add("Forms.CommandButton.1", "btnNext")
+    With btnNext: .Top = 60: .Left = 380: .Width = 30: .Caption = ">": End With
+
 ' Weekday headers
     weekdays = Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
     For col = 0 To 6
         Set dayLabel = f.Controls.Add("Forms.Label.1", "lblDay" & col)
         With dayLabel
-            .Top = 40: .Left = 10 + (col * 55)
+            .Top = 90: .Left = 10 + (col * 55)
             .Width = 50: .Height = 15
             .Caption = weekdays(col): .TextAlign = 2: .Font.Bold = True
         End With
     Next col
 ' Create date buttons and assign handlers
     DatePickerForm.InitButtonHandlers 42
-    Dim topOffset As Double: topOffset = 60
+    Dim topOffset As Double: topOffset = 110
     Dim idx As Integer: idx = 1
 For row = 0 To 5
         For col = 0 To 6
@@ -66,7 +73,7 @@ idx = idx + 1
 ' Cancel button
     Set btnCancel = f.Controls.Add("Forms.CommandButton.1", "btnCancel")
     With btnCancel
-        .Top = 280: .Left = 160: .Width = 90: .Caption = "Cancel"
+        .Top = 330: .Left = 165: .Width = 90: .Caption = "Cancel"
     End With
 ' Assign event handlers for navigation and cancel buttons
     Set DatePickerForm.btnPrevHandler = btnPrev
