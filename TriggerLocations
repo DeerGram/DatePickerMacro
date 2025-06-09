@@ -1,0 +1,18 @@
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+    If Target.Cells.CountLarge > 1 Then Exit Sub
+Dim allowedCells As Variant
+    allowedCells = Array("F12", "F18", "F24", "F30", "F36", "E65", "E71", "E77", "E83", "E94", "E95", "E96") ' Modify as needed
+Dim cellRef As Variant
+    For Each cellRef In allowedCells
+        If Not Intersect(Target, Me.Range(cellRef)) Is Nothing Then
+            Call PopulateDatePickerForm
+            With DatePickerForm
+                .currentMonth = Month(Date)
+                .currentYear = Year(Date)
+                .LoadCalendar .currentYear, .currentMonth
+                .Show
+            End With
+            Exit For
+        End If
+    Next cellRef
+End Sub
